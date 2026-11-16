@@ -1,0 +1,252 @@
+/* ==========================================================================
+   DECKFOLIO - GLOBAL DESIGN FILE
+   Semua warna, font, animasi, dan gaya dasar ada di file ini.
+   ========================================================================== */
+
+/* FONTS: ganti di sini, lalu ubah --font-* di bagian @theme */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
+
+@import "tailwindcss";
+
+/* Dark mode lewat class .dark (diatur oleh next-themes) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* --------------------------------------------------------------------------
+   1. COLOR TOKENS
+   -------------------------------------------------------------------------- */
+:root {
+  --paper: #f7f5f0;
+  --surface: #ffffff;
+  --ink: #0a0a0a;
+  --muted: #6b6b66;
+  --line: #0a0a0a;
+  --line-soft: #d9d6cd;
+  --accent: #c2410c;
+  --accent-ink: #ffffff;
+  --inverse: #0a0a0a;
+  --inverse-ink: #f7f5f0;
+}
+
+.dark {
+  --paper: #0a0a0a;
+  --surface: #121212;
+  --ink: #f2f0ea;
+  --muted: #9a9a93;
+  --line: #f2f0ea;
+  --line-soft: #2a2a28;
+  --accent: #e2592a;
+  --accent-ink: #0a0a0a;
+  --inverse: #f2f0ea;
+  --inverse-ink: #0a0a0a;
+}
+
+/* --------------------------------------------------------------------------
+   2. THEME (jadi class Tailwind: bg-paper, text-ink, font-display, dst)
+   -------------------------------------------------------------------------- */
+@theme inline {
+  --color-paper: var(--paper);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-line-soft: var(--line-soft);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-inverse: var(--inverse);
+  --color-inverse-ink: var(--inverse-ink);
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --radius-none: 0px;
+
+  /* ANIMATIONS: dipakai dengan class animate-fade-up, animate-fade-in, dst */
+  --animate-fade-up: fade-up 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-fade-in: fade-in 0.35s ease-out both;
+  --animate-slide-in-left: slide-in-left 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  @keyframes slide-in-left {
+    from { opacity: 0; transform: translateX(-16px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+}
+
+/* --------------------------------------------------------------------------
+   3. BASE
+   -------------------------------------------------------------------------- */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-paper text-ink font-sans antialiased;
+  }
+  ::selection {
+    background: var(--accent);
+    color: var(--accent-ink);
+  }
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+  h1, h2, h3, h4 {
+    @apply font-display tracking-tight;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* --------------------------------------------------------------------------
+   4. COMPONENT PRIMITIVES (gaya yang dipakai berulang di seluruh web)
+   Memakai @utility (cara resmi Tailwind v4), jadi bisa dipakai di mana saja,
+   termasuk di dalam @apply dan bersama hover:, md:, dst.
+   -------------------------------------------------------------------------- */
+
+/* Label kecil monospace bernomor, contoh: 01 / FLOOR PLAN */
+@utility label-mono {
+  @apply font-mono text-[11px] uppercase tracking-widest;
+}
+
+/* Garis tipis tegas ala editorial */
+@utility rule {
+  @apply border-t border-line;
+}
+
+/* Sel bento grid: border tipis, siku, tanpa bayangan */
+@utility cell {
+  @apply border border-line bg-surface p-6;
+}
+@utility cell-inverse {
+  @apply border border-line bg-inverse p-6 text-inverse-ink;
+}
+
+/* Tombol */
+@utility btn {
+  @apply inline-flex items-center justify-center gap-2 border border-line px-4 py-2 text-sm font-medium transition-colors;
+}
+@utility btn-solid {
+  @apply btn bg-inverse text-inverse-ink hover:bg-accent hover:text-accent-ink hover:border-accent;
+}
+@utility btn-outline {
+  @apply btn bg-transparent text-ink hover:bg-inverse hover:text-inverse-ink;
+}
+
+/* Form */
+@utility input {
+  @apply w-full border border-line-soft bg-surface px-3 py-2.5 text-sm text-ink transition-colors placeholder:text-muted focus:border-line;
+}
+@utility field-label {
+  @apply block text-xs text-muted;
+}
+@utility link-underline {
+  @apply underline decoration-1 underline-offset-4 hover:text-accent;
+}
+
+/* Kotak pesan */
+@utility notice {
+  @apply border border-line px-3 py-2 text-sm;
+}
+@utility notice-error {
+  @apply border border-accent px-3 py-2 text-sm text-accent;
+}
+
+/* Tombol kecil (aksi di kartu) */
+@utility btn-sm {
+  @apply inline-flex items-center justify-center gap-2 border border-line bg-transparent px-3 py-1.5 text-xs font-medium text-ink transition-colors hover:bg-inverse hover:text-inverse-ink;
+}
+@utility btn-sm-danger {
+  @apply inline-flex items-center justify-center gap-2 border border-accent bg-transparent px-3 py-1.5 text-xs font-medium text-accent transition-colors hover:bg-accent hover:text-accent-ink;
+}
+
+/* Label status */
+@utility tag {
+  @apply label-mono inline-block border border-line px-2 py-0.5;
+}
+@utility tag-live {
+  @apply label-mono inline-block border border-accent bg-accent px-2 py-0.5 text-accent-ink;
+}
+
+/* Sembunyikan scrollbar (carousel) */
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Item daftar isi (TOC) */
+@utility toc-link {
+  @apply flex items-baseline gap-3 border-l border-line-soft py-1.5 pl-3 text-sm text-muted transition-colors hover:text-ink;
+  &[aria-current="true"] {
+    @apply border-accent text-ink;
+  }
+}
+
+/* Tombol aksen (aman di atas panel hitam) */
+@utility btn-accent {
+  @apply btn border-accent bg-accent text-accent-ink hover:border-paper hover:bg-paper hover:text-ink;
+}
+
+/* Editor teks (Tiptap) di editor admin */
+@utility rich-editor {
+  @apply min-h-28 border border-line-soft bg-surface p-3 text-[0.95rem] leading-relaxed text-ink;
+
+  &:focus-visible {
+    @apply border-line;
+  }
+  & p {
+    @apply mb-3;
+  }
+  & p:last-child {
+    @apply mb-0;
+  }
+  & ul {
+    @apply mb-3 list-disc pl-6;
+  }
+  & ol {
+    @apply mb-3 list-decimal pl-6;
+  }
+  & code {
+    @apply bg-paper px-1 font-mono;
+  }
+}
+
+/* Cetak / Save as PDF: selalu terang, warna latar ikut tercetak */
+@media print {
+  .dark {
+    --paper: #ffffff;
+    --surface: #ffffff;
+    --ink: #0a0a0a;
+    --muted: #6b6b66;
+    --line: #0a0a0a;
+    --line-soft: #d9d6cd;
+    --accent: #c2410c;
+    --accent-ink: #ffffff;
+    --inverse: #0a0a0a;
+    --inverse-ink: #f7f5f0;
+  }
+  * {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  [id^="section-"] {
+    break-before: page;
+  }
+  [id^="slide-"] {
+    break-inside: avoid;
+  }
+}
