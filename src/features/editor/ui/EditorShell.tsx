@@ -103,6 +103,9 @@ export function EditorShell({
             <a href={`/api/export/pptx?id=${projectId}`} className="btn-sm">
               PPTX
             </a>
+            <a href={`/api/export/html?id=${projectId}`} className="btn-sm">
+              Offline HTML
+            </a>
             {isPublic && (
               <Link
                 href={`/p/${project.settings.slug}`}
